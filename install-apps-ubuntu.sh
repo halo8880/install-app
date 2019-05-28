@@ -26,13 +26,13 @@ main(){
 	 add_LC_enviroment_variable
 
 	# install_axel
-    # install_mysql
-    # install_java8
+    install_mysql
+    install_java8
     # install_java7
-    # install_git
-    # install_maven
+    install_git
+    install_maven
     # install_tomcat7
-    # install_tomcat8
+    install_tomcat8
     # install_vagrant
 	# install_mongodb_org
 	# install_elasticsearch
@@ -40,13 +40,13 @@ main(){
    	# install_angular4
 	# install_postgreSQL
 	# install_docker
-	 install_docker_compose
+	# install_docker_compose
 }
 
 
 is_installed() {
     command -v "$1" >/dev/null 2>&1
-    # How to use this function? -> Below
+    # How to use this function? -> Belowjava
     #   if is_installed git; then
 	# 		echo "git is installed"
 	# 	else 
@@ -84,20 +84,23 @@ install_mysql(){
     clear_dpkg
     sudo echo "mysql-server mysql-server/root_password password $DEFAULT_PASSWORD" | sudo debconf-set-selections
     sudo echo "mysql-server mysql-server/root_password_again password $DEFAULT_PASSWORD" | sudo debconf-set-selections
-    sudo apt-get -y install mysql-server-5.6
+    sudo apt-get -y install mysql-server-5.7
     echo "$ECHO_STOP---------------------------------------------Installing MySQL Done---------------------------------------------$RESET"
 }
 
 install_java8(){
 	echo "$ECHO_START---------------------------------------------Starting Install Java8---------------------------------------------$RESET"
 	clear_dpkg
-	sudo apt-get install -y python-software-properties debconf-utils
-	sudo add-apt-repository ppa:webupd8team/java -y
-	sudo apt-get update
+	apt-get update
 	sudo echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
-	sudo apt-get install -y oracle-java8-installer
-	echo "------------------Set JDK8 Is Default-------------------"
-	sudo apt-get install oracle-java8-set-default
+	apt-get install -y openjdk-8-jdk
+	echo "-------------------Set JAVA_HOME-----------------"
+	JAVA_HOME="JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/"
+	ENVIROMENT_FILE=/etc/environment
+	#tee -a FILE write new line in last file. 
+	#Or can use command sudo sed -i '$ a text to be inserted' FILE ($ select end of file, a tells it append)
+	#echo $JAVA_HOME | sudo tee -a $ENVIROMENT_FILE
+	sudo sed -i "$ a $JAVA_HOME" $ENVIROMENT_FILE
 	echo "$ECHO_STOP---------------------------------------------Installing Java8 Done---------------------------------------------$RESET"
 }
 
@@ -168,7 +171,7 @@ install_tomcat7(){
 # Please check this link before run this script. If this one not exist, please replace the link form https://tomcat.apache.org/download-80.cgi
 install_tomcat8(){
 	echo "$ECHO_START---------------------------------------------Starting Install Tomcat 8---------------------------------------------$RESET"
-	URL="http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/apache-tomcat-8.5.20.tar.gz"
+	URL="http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz"
 	FILE_NAME=$(basename "$URL")
 
 	mkdir -p $FOLDER_CONTAIN_TOMCAT
