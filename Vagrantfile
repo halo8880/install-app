@@ -16,6 +16,14 @@ Vagrant.configure("2") do |config|
          vba.gui = false
          vba.memory = "2048"
        end
+	   
+	   # Must install plugin first: `vagrant plugin install vagrant-timezone`
+	   if Vagrant.has_plugin?("vagrant-timezone")
+		 config.timezone.value = :host
+	   end
+	   # Congig timezone manual by:
+	   # Change `Europe/Paris` by your location (can use command: `timedatectl list-timezones | grep -i europe` to get list timezone)
+	   # config.vm.provision :shell, :inline => "sudo rm /etc/localtime && sudo ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime", run: "always"
     end
     
     config.vm.define :beta do |beta|
