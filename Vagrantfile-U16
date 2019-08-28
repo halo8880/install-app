@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+	config.vm.define :alpha do |alpha|
+	  alpha.vm.box = "ubuntu/xenial64"
+	  alpha.vm.network "private_network", ip: "192.168.10.7"
+	  alpha.vm.hostname = "alpha"
+	  alpha.vm.provider "virtualbox" do |vba|
+		 vba.gui = false
+		 vba.memory = "1024"
+	   end
+	end
+	
+	config.vm.define :beta do |beta|
+	  beta.vm.box = "ubuntu/xenial64"
+	  beta.vm.network "private_network", ip: "192.168.10.8"
+	  beta.vm.hostname = "beta"
+	  beta.vm.provider "virtualbox" do |vbb|
+		 vbb.gui = false
+		 vbb.memory = "1024"
+	   end
+	end
+
+end
